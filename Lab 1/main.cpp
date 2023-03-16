@@ -27,7 +27,9 @@ void taskTwo(std::shared_ptr<Semaphore> theSemaphore){
   std::cout << "second"<<std::endl;
 }
 
-
+//The main function
+// It runs two threads
+// Has them print out taskOne and taskTwo
 int main(void){
   std::thread threadOne, threadTwo;
   std::shared_ptr<Semaphore> sem( new Semaphore);

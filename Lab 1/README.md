@@ -1,7 +1,6 @@
 The README file is a text file that explains what a project is.
-It should contain information on
 
-#  Project Licence
+## Project Licence
 GNU General Public License v3.0
 
 ## Authors:
