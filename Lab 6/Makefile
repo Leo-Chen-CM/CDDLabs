@@ -7,7 +7,7 @@
 
 CC=g++
 CFLAGS= -std=c++11 -pthread
-CPPFILES= Semaphore.cpp main.cpp Barrier.cpp SafeBuffer.cpp Event.cpp
+CPPFILES= Semaphore.cpp main.cpp SafeBuffer.cpp Event.cpp
 OBJFILES= Semaphore.o main.o SafeBuffer.o Event.o
 DBGFLAGS= -g -O0
 #This rule says that each .o file depends on a .cpp file of the same name

@@ -1,6 +1,7 @@
 //#include "Barrier.h"
 #include "Event.h"
 #include "Semaphore.h"
+#include "SafeBuffer.h"
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -13,9 +14,9 @@
 // Created: Thur March  23 14:59:02 2023 (+0000)
 // Version: 
 // Package-Requires: ()
-// Last-Updated: Fri Mar 31 10:55:14 2023 (+0100)
+// Last-Updated: Fri Mar 31 16:56:57 2023 (+0100)
 //           By: Leo
-//     Update #: 38
+//     Update #: 74
 // URL: 
 // Doc URL: 
 // Keywords: 
@@ -49,7 +50,7 @@
 // 
 // 
 
-static const int num_threads = 100;
+static const int num_threads = 10;
 const int size=20;
 std::shared_ptr<Semaphore> m_mutex;
 std::shared_ptr<Semaphore> m_items;
@@ -58,16 +59,19 @@ std::shared_ptr<Semaphore> m_items;
     \brief Creates events and adds them to buffer
 */
 
-void producer(std::shared_ptr<SafeBuffer<std::shared_ptr<Event>> theBuffer, int numLoops){
+void producer(std::shared_ptr<SafeBuffer> theBuffer, int numLoops){
 
   for(int i=0;i<numLoops;++i)
     {
     //Produce event and add to buffer
-    Event e= createEvent(i);
-    m_mutex->wait();
-    theBuffer->add(e);
-    m_items->signal();
-    m_mutex->signal();
+      Event e = Event();
+
+      m_mutex->Wait();
+      theBuffer->add(e);
+      m_mutex->Signal();
+      m_items->Signal();
+
+    std::cout << "Character was added to the buffer" <<std::endl;
     }
   
 
@@ -77,47 +81,51 @@ void producer(std::shared_ptr<SafeBuffer<std::shared_ptr<Event>> theBuffer, int 
     \brief Takes events from buffer and consumes them
 */
 
-void consumer(std::shared_ptr<SafeBuffer<std::shared_ptr Event>> theBuffer, int numLoops)
+void consumer(std::shared_ptr<SafeBuffer> theBuffer)
 {
 
-  for(int i=0;i<numLoops;++i)
-    {
-    //Produce event and add to buffer
+ m_items->Wait();
+ m_mutex->Wait();
 
-    m_items->wait();
-    m_mutex->wait();
-    
-    std::shared_ptr<Event> e= theBuffer->get();
+ Event e = theBuffer->get();
 
-    m_mutex->signal();
-    e->consume();
-    }
-  
-
+  m_mutex->Signal();
+  e.Process();
+  std::cout << "Character was taken out of the buffer" <<std::endl;
 }
 
 int main(void)
 {
 
-  std::vector<std::thread> vt(num_threads);
-  std::shared_ptr<SafeBuffer<std::shared_ptr<Event>> aBuffer( new Buffer<shared_ptr Event>(size));
+  std::vector<std::thread> producersThread(num_threads);
+  std::vector<std::thread> consumersThread(num_threads);
 
-  m_mutex = std::make_shared<Semaphore>(1);
-  m_items =  std::make_shared<Semaphore>(0);
-  
-  /**< Launch the threads  */
-  int i=0;
-  for(std::thread& t: vt)
+  std::shared_ptr<SafeBuffer> theBuffer(new SafeBuffer);
+
+
+
+  for(std::thread&t : producersThread)
     {
-    t=std::thread(updateTask,aBuffer,10);
-  }
-  
+      t = std::thread(producer, theBuffer, 10);
+    }
+
+
+  for(std::thread&t : consumersThread)
+    {
+	t = std::thread(consumer, theBuffer);
+    }
+
   /**< Join the threads with the main thread */
-  for (auto& v :vt)
+  for (auto& v :producersThread)
     {
       v.join();
-  }
-  std::cout << sharedVariable << std::endl;
+    }
+
+  for (auto& v :consumersThread)
+    {
+      v.join();
+    }
+ 
   return 0;
 }
 //barrier

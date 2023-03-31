@@ -5,9 +5,9 @@
 // Author: Leo
 // Maintainer: 
 // Created: Thu Mar 30 14:59:49 2023 (+0100)
-// Last-Updated: Thu Mar 30 18:58:30 2023 (+0100)
+// Last-Updated: Fri Mar 31 16:50:35 2023 (+0100)
 //           By: Leo
-//     Update #: 5
+//     Update #: 21
 // 
 // 
 
@@ -36,14 +36,21 @@
 // 
 
 /* Code: */
-
+#ifndef EVENT_H
+#define EVENT_H 
+#include <vector>
+#include <cstdlib>
 class Event
 {
-  Event();
-
  public:
-  
+  char m_letter;
+  char CreateEvent();
+  char Process();
+  std::vector<char> m_Letters;
+  Event();
+  ~Event(){};
 };
 
+#endif
 
 /* Event.h ends here */

@@ -5,9 +5,9 @@
 // Author: Leo
 // Maintainer: 
 // Created: Thu Mar 30 14:59:49 2023 (+0100)
-// Last-Updated: Fri Mar 31 10:29:40 2023 (+0100)
+// Last-Updated: Fri Mar 31 16:39:51 2023 (+0100)
 //           By: Leo
-//     Update #: 6
+//     Update #: 10
 // 
 // 
 
@@ -45,19 +45,14 @@ SafeBuffer::SafeBuffer()
 
 void SafeBuffer::add(Event t_event)
 {
-  
+  m_events.push_back(t_event);
 }
 
 Event SafeBuffer::get()
 {
-  return null;
-}
-
-
-void SafeBuffer::process()
-{
-
-  
+  m_event = m_events.back();
+  m_events.pop_back();
+  return m_event;
 }
 
 // 

@@ -5,9 +5,9 @@
 // Author: Leo
 // Maintainer: 
 // Created: Thu Mar 30 16:02:13 2023 (+0100)
-// Last-Updated: Thu Mar 30 16:02:47 2023 (+0100)
+// Last-Updated: Fri Mar 31 16:51:23 2023 (+0100)
 //           By: Leo
-//     Update #: 2
+//     Update #: 18
 // 
 // 
 
@@ -38,10 +38,21 @@
 // Code:
 
 //
+#include "Event.h"
 Event::Event()
 {
+  m_Letters = {'A','B', 'C','D','E', 'F','G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
   
 }
 
 // 
 // Event.cpp ends here
+
+
+char Event::Process()
+{
+  int randomLetterNumber = std::rand() % 0 + m_Letters.size();
+  m_letter = m_Letters[randomLetterNumber];
+
+  return m_letter;
+}

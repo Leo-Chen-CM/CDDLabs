@@ -7,9 +7,9 @@
 // Created: Thur March  23 14:59:02 2023 (+0000)
 // Version: 
 // Package-Requires: ()
-// Last-Updated: Fri Mar 31 10:29:35 2023 (+0100)
+// Last-Updated: Fri Mar 31 16:38:31 2023 (+0100)
 //           By: Leo
-//     Update #: 24
+//     Update #: 32
 // URL: 
 // Doc URL: 
 // Keywords: 
@@ -45,14 +45,19 @@
 /* Code: */
 
 #include "Event.h"
+#include <vector>
+#include "Semaphore.h"
 class SafeBuffer
 {
-  SafeBuffer();
+private:
+  std::vector<Event> m_events;
+  Event m_event;
   
  public:
   void add(Event t_event);
   Event get();
-  void process();
+  SafeBuffer();
+
 };
 
 
