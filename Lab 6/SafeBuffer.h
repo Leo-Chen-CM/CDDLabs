@@ -7,9 +7,9 @@
 // Created: Thur March  23 14:59:02 2023 (+0000)
 // Version: 
 // Package-Requires: ()
-// Last-Updated: Fri Mar 31 16:38:31 2023 (+0100)
+// Last-Updated: Fri Mar 31 18:11:24 2023 (+0100)
 //           By: Leo
-//     Update #: 32
+//     Update #: 33
 // URL: 
 // Doc URL: 
 // Keywords: 
@@ -57,7 +57,7 @@ private:
   void add(Event t_event);
   Event get();
   SafeBuffer();
-
+  ~SafeBuffer(){};
 };
 
 

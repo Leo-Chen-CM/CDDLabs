@@ -14,9 +14,9 @@
 // Created: Thur March  23 14:59:02 2023 (+0000)
 // Version: 
 // Package-Requires: ()
-// Last-Updated: Fri Mar 31 16:56:57 2023 (+0100)
+// Last-Updated: Fri Mar 31 18:21:20 2023 (+0100)
 //           By: Leo
-//     Update #: 74
+//     Update #: 94
 // URL: 
 // Doc URL: 
 // Keywords: 
@@ -59,7 +59,8 @@ std::shared_ptr<Semaphore> m_items;
     \brief Creates events and adds them to buffer
 */
 
-void producer(std::shared_ptr<SafeBuffer> theBuffer, int numLoops){
+void producer(std::shared_ptr<SafeBuffer> theBuffer, int numLoops)
+{
 
   for(int i=0;i<numLoops;++i)
     {
@@ -96,36 +97,36 @@ void consumer(std::shared_ptr<SafeBuffer> theBuffer)
 
 int main(void)
 {
+  std::vector<std::thread> producerThread(num_threads);
+  std::vector<std::thread> consumerThread(num_threads);
 
-  std::vector<std::thread> producersThread(num_threads);
-  std::vector<std::thread> consumersThread(num_threads);
+  std::shared_ptr<SafeBuffer> theBuffer =new SafeBuffer();
 
-  std::shared_ptr<SafeBuffer> theBuffer(new SafeBuffer);
-
-
-
-  for(std::thread&t : producersThread)
+  std::cout <<"Test" << std::endl;
+  
+  for(std::thread& t : producerThread)
     {
-      t = std::thread(producer, theBuffer, 10);
+      t = std::thread(producer, theBuffer, num_threads);
     }
+  
+  std::cout <<"Test" << std::endl;
 
-
-  for(std::thread&t : consumersThread)
+  for(std::thread& t : consumerThread)
     {
 	t = std::thread(consumer, theBuffer);
     }
 
+   std::cout <<"Test" << std::endl;
   /**< Join the threads with the main thread */
-  for (auto& v :producersThread)
+  for (auto& v :producerThread)
     {
       v.join();
     }
 
-  for (auto& v :consumersThread)
+  for (auto& v :consumerThread)
     {
       v.join();
     }
- 
+  
   return 0;
 }
-//barrier
