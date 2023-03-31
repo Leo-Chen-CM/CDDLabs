@@ -17,7 +17,10 @@ main.cpp
 	Has the main, updateTask functions.
 
 Safebuffer.h and Safebuffer.cpp
-        They house the X files. Not really though.
+        They house the safe class, constructor, get fucntions for the Event and add function for adding it.
 
 ## Additional Dependencies
 None
+
+##Notes:
+This doesn't work I have no idea why.
